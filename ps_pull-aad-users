@@ -1,0 +1,29 @@
+$output = @()
+
+$users =  Get-AzureADUser -All $True -Filter "extension_fc58c880d16246dd86e564c9d2f97906_extensionAttribute6 eq 'Employee' and AccountEnabled eq true"
+
+foreach ($user in $users) {
+    $manager = Get-AzureADUserManager -ObjectId $user.ObjectId
+
+    $data = New-Object -TypeName psobject
+
+    $data | Add-Member -MemberType NoteProperty -Name FirstName -Value $user.GivenName
+    $data | Add-Member -MemberType NoteProperty -Name LastName -Value $user.Surname
+    $data | Add-Member -MemberType NoteProperty -Name DisplayName -Value $user.DisplayName
+    $data | Add-Member -MemberType NoteProperty -Name Country -Value $user.Country
+    $data | Add-Member -MemberType NoteProperty -Name HomeOffice -Value $user.PhysicalDeliveryOfficeName
+    $data | Add-Member -MemberType NoteProperty -Name Company -Value $user.CompanyName
+    $data | Add-Member -MemberType NoteProperty -Name Department -Value $user.Department
+    $data | Add-Member -MemberType NoteProperty -Name JobTitle -Value $user.JobTitle
+    $data | Add-Member -MemberType NoteProperty -Name PhoneNumber -Value $user.TelephoneNumber
+    $data | Add-Member -MemberType NoteProperty -Name EmailAddress -Value $user.Mail
+    $data | Add-Member -MemberType NoteProperty -Name Manager -Value $manager.DisplayName
+    $data | Add-Member -MemberType NoteProperty -Name ManagerTitle -Value $manager.JobTitle
+    $data | Add-Member -MemberType NoteProperty -Name ManagerEmail -Value $manager.Mail
+    $data | Add-Member -MemberType NoteProperty -Name AccountUniqueId -Value $user.ObjectId
+
+    $output += $data
+
+}
+
+$output | Export-Csv -Path "%USERPROFILE%\Desktop\Active-Directory_User-List.csv" -NoTypeInformation
