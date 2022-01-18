@@ -18,7 +18,6 @@ foreach ($user in $users) {
     $data | Add-Member -MemberType NoteProperty -Name JobTitle -Value $user.JobTitle
     $data | Add-Member -MemberType NoteProperty -Name PhoneNumber -Value $user.TelephoneNumber
     $data | Add-Member -MemberType NoteProperty -Name EmailAddress -Value $user.Mail
-    $data | Add-Member -MemberType NoteProperty -Name AssignedLicenses -Value $user.AssignedLicenses
     $data | Add-Member -MemberType NoteProperty -Name Manager -Value $manager.DisplayName
     $data | Add-Member -MemberType NoteProperty -Name ManagerTitle -Value $manager.JobTitle
     $data | Add-Member -MemberType NoteProperty -Name ManagerEmail -Value $manager.Mail
